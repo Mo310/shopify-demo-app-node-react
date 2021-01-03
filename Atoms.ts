@@ -1,12 +1,7 @@
+import Cookies from 'js-cookie';
 import {atom} from 'recoil';
 
-export const appState = atom({
-  key: 'appState',
-  default: {
-    currentPath: {
-      path: '/',
-      href: '/',
-    },
-    billing: 'init',
-  },
+export const shopOriginState = atom<string>({
+  key: 'shopOriginState',
+  default: Cookies.get('shopOrigin'),
 });

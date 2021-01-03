@@ -1,5 +1,6 @@
 import 'isomorphic-fetch';
 
+import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector';
 import createShopifyAuth, {verifyRequest} from '@shopify/koa-shopify-auth';
 import graphQLProxy, {ApiVersion} from '@shopify/koa-shopify-graphql-proxy';
 import {DeliveryMethod, registerWebhook, Topic} from '@shopify/koa-shopify-webhooks';
@@ -9,12 +10,12 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import session from 'koa-session';
 import next from 'next';
+import {postgraphile} from 'postgraphile';
 import PrettyError from 'pretty-error';
-import {parse} from 'url';
 
 import apiRouter from './server/api';
+import {checkBilling} from './server/api';
 import getShopData from './server/getShopData';
-import getSubscriptionUrl from './server/getSubscriptionUrl';
 import webhookRouter from './server/webhooks';
 
 PrettyError.start();
@@ -22,9 +23,7 @@ PrettyError.start();
 dotenv.config();
 const port = parseInt(process.env.PORT as string, 10) || 3000;
 
-const app = next({
-  dev: process.env.NODE_ENV !== 'production',
-});
+const app = next({dev: process.env.NODE_ENV !== 'production'});
 
 const handle = app.getRequestHandler();
 
@@ -94,33 +93,41 @@ app.prepare().then(() => {
         shopWebhook('ORDERS_DELETE', 'orders/delete');
         shopWebhook('ORDERS_PAID', 'orders/paid');
         shopWebhook('ORDERS_CANCELLED', 'orders/cancelled');
+        shopWebhook('SHOP_UPDATE', 'shop/update');
         shopWebhook('APP_SUBSCRIPTIONS_UPDATE', 'app/subscriptions');
+        shopWebhook('APP_UNINSTALLED', 'app/uninstalled');
 
         await getShopData(ctx, accessToken, shop);
 
-        await getSubscriptionUrl(ctx, accessToken, shop);
+        const billingActive = await checkBilling(ctx, accessToken, shop);
+
+        if (billingActive === true) {
+          ctx.redirect(`/?shop=${shop}`);
+        } else {
+          ctx.redirect(billingActive as string);
+        }
       },
+    })
+  );
+
+  server.use(
+    postgraphile(process.env.DATABASE_URL || 'postgres://postgres:root@localhost:5432/shopify', 'public', {
+      graphqlRoute: '/app/graphql',
+      graphiqlRoute: '/app/graphiql',
+      appendPlugins: [PgSimplifyInflectorPlugin],
+      watchPg: true,
+      graphiql: true,
+      dynamicJson: true,
+      enhanceGraphiql: true,
+      subscriptions: true,
+      enableCors: true,
     })
   );
 
   server.use(graphQLProxy({version: shopifyApiVersipn}));
 
   router.get('(.*)', verifyRequest(), async (ctx) => {
-    const parsedUrl = parse(ctx.req.url as string, true);
-
-    const {pathname} = parsedUrl;
-
-    // if (pathname === '/api/verifiybilling') {
-    //   const {shop} = ctx.query;
-
-    //   const subsciption = await getActiveSubscription(shop);
-
-    //   dbQuery('UPDATE shop SET subscription_status = $1 WHERE shop_id = $2', [subsciption, shop], (result) => {
-    //     ctx.redirect('/');
-    //   });
-    // } else {
     await handle(ctx.req, ctx.res);
-    // }
 
     ctx.res.statusCode = 200;
   });

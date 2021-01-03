@@ -16,33 +16,19 @@ const Layout: React.FC<ILayout> = ({children}) => {
 
   const {redirectToPage} = useRedirect();
 
-  const router = useRouter();
-
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location && !requestedBilling) {
       setRequestedBilling(true);
 
-      if (router.query.charge_id) {
-        Axios.post(`/api/verfifybilling?shop=${router.query.shop}`)
-          .then((res) => {
-            if (res.data === true) {
-              setInitLoading(false);
-            } else {
-              redirectToPage(res.data, true);
-            }
-          })
-          .catch((err) => console.log(err));
-      } else {
-        Axios.post(`/api/billing`)
-          .then((res) => {
-            if (res.data === true) {
-              setInitLoading(false);
-            } else {
-              redirectToPage(res.data, true);
-            }
-          })
-          .catch((err) => console.log(err));
-      }
+      Axios.post('/api/verifiybilling')
+        .then((res) => {
+          if (res.data === true) {
+            setInitLoading(false);
+          } else {
+            redirectToPage(res.data, true);
+          }
+        })
+        .catch((err) => console.log(err));
     }
   });
 

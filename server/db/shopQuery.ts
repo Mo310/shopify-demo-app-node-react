@@ -1,4 +1,3 @@
-// import data from '../getShopDataResponse.json';
 import {checkIfExistsQuery, dbQuery} from './client';
 
 export const shopDataArray = (data: any, accessToken: string, shop: string) => [
@@ -46,27 +45,8 @@ export const insertFirstShopData = (data: any, accessToken: string, shop: string
   );
 };
 
-export const updateShopData = (data: any, accessToken: string, shop: string) => {
-  dbQuery(
-    `UPDATE shop 
-        SET address1 = $1, 
-        address2 = $2, 
-        city = $3, 
-        country = $4,
-        country_code = $5, 
-        email = $6, 
-        name = $7, 
-        phone = $8, 
-        province = $9, 
-        shop_owner = $10,
-        shop_url = $11, 
-        shopify_id = $12, 
-        access_token = $13, 
-        zip = $14
-        WHERE shop_id = $15`,
-    shopDataArray(data, accessToken, shop),
-    (res) => console.log('update shop data: ', res)
-  );
+export const updateShopData = (accessToken: string, shop: string) => {
+  dbQuery(`UPDATE shop  SET access_token = $1 WHERE shop_id = $2`, [accessToken, shop], (res) => console.log('update shop data: ', res));
 };
 
 export const checkIfShopExists = async (id: string, callback: (result: boolean) => void) => {

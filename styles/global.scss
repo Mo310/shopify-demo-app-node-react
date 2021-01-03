@@ -1,0 +1,106 @@
+html,
+body {
+    overflow: hidden;
+    font-size: 14px !important;
+    // background: linear-gradient(115.95deg, #363F4B 0%, #1B2027 100%);
+    // color: #ffffff;
+}
+
+
+
+/* roboto 100 thin*/
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 100;
+    src: url('./fonts/Roboto-Thin.ttf') format('truetype'), ;
+}
+
+/* roboto 100 thin italic */
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 100;
+    src: url('./fonts/Roboto-ThinItalic.ttf') format('truetype'), ;
+}
+
+/* roboto 300 light normal */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    src: url('./fonts/Roboto-Light.ttf') format('truetype'), ;
+}
+
+/* roboto 300 light italic */
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 300;
+    src: url('./fonts/Roboto-LightItalic.ttf') format('truetype'), ;
+}
+
+/* roboto 400 regular */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/Roboto-Regular.ttf') format('truetype'), ;
+}
+
+/* roboto 400 italic */
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 400;
+    src: url('./fonts/Roboto-Italic.ttf') format('truetype'), ;
+}
+
+/* roboto 500 medium normal */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    src: url('./fonts/Roboto-Medium.ttf') format('truetype'), ;
+}
+
+/* roboto 500 medium italic */
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 500;
+    src: url('./fonts/Roboto-MediumItalic.ttf') format('truetype'), ;
+}
+
+/* roboto 700 bold italic */
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 700;
+    src: url('./fonts/Roboto-Bold.ttf') format('truetype'), ;
+}
+
+/* roboto 700 bold normal */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: url('./fonts/Roboto-BoldItalic.ttf') format('truetype'), ;
+}
+
+/* roboto 900 black normal */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    src: url('./fonts/Roboto-Black.ttf') format('truetype'), ;
+}
+
+/* roboto 900 black italic */
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 900;
+    src: url('./fonts/Roboto-BlackItalic.ttf') format('truetype'),
+    ;
+}

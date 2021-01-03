@@ -44,9 +44,11 @@ const getSubscriptionUrl = async (ctx: Context, accessToken: string, shop: strin
   const responseJson = await response.json();
 
   console.log(responseJson);
+
   if (responseJson.error) return (ctx.response.status = 200);
 
   const confirmationUrl = responseJson.data.appSubscriptionCreate.confirmationUrl;
+
   if (returnUrl) return confirmationUrl;
 
   return ctx.redirect(confirmationUrl);

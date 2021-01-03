@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import Router from 'koa-router';
 
 import {checkIfExistsQuery, dbQuery} from '../db/client';
-import exampleOrderWebhook from './exampleWebhookData.json';
 import {SubWebhookContext} from './interfaces';
 
 dotenv.config();
@@ -36,7 +35,8 @@ webhookRouter.post('/products/:topic', webhook, async (ctx) => {
 });
 
 webhookRouter.post('/orders/:topic', webhook, async (ctx) => {
-  const {topic, domain, payload} = exampleOrderWebhook.webhook;
+  const {topic, domain, payload} = ctx.state.webhook;
+  // const {topic, domain, payload} = exampleOrderWebhook.webhook;
 
   webhookLog(topic);
 
@@ -44,9 +44,32 @@ webhookRouter.post('/orders/:topic', webhook, async (ctx) => {
     if (orderExists) {
       console.log(`Order with ${payload.id} already exists `);
     } else {
-      dbQuery('INSERT INTO shoporder(order_id, data, shop_id) VALUES ($1, $2, $3)', [payload.id, payload, domain], (res) => console.log(res));
+      dbQuery('INSERT INTO shoporder(shoporder_id, data, shop_id) VALUES ($1, $2, $3)', [payload.id, payload, domain], (res) => console.log(res));
     }
   });
+
+  ctx.res.statusCode = 200;
+});
+
+webhookRouter.post('/app/uninstalled', webhook, async (ctx: any) => {
+  const {topic, domain, payload} = ctx.state.webhook;
+
+  webhookLog(topic);
+
+  const queryString = 'UPDATE shop SET subscription_status = $1 WHERE shop_id = $2';
+  dbQuery(queryString, ['UNINSTALLED', domain], (result) => {
+    console.log(result);
+  });
+
+  ctx.res.statusCode = 200;
+});
+
+webhookRouter.post('/shop/update', webhook, async (ctx: any) => {
+  const {topic, domain, payload} = ctx.state.webhook;
+
+  console.log({topic, domain, payload});
+
+  webhookLog(topic);
 
   ctx.res.statusCode = 200;
 });

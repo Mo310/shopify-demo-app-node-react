@@ -72,7 +72,8 @@ const getShopData = async (ctx: Context, accessToken: string, shop: string) => {
 
   checkIfExistsQuery('shop', 'shop_id', [shop], (exists) => {
     if (exists) {
-      updateShopData(responseJson.data.shop, accessToken, shop);
+      // TODO: überlegen was aktualisiert wird
+      updateShopData(accessToken, shop);
       console.log(`shop mit id: ${shop} exestiert bereits`);
     } else {
       insertFirstShopData(responseJson.data.shop, accessToken, shop);

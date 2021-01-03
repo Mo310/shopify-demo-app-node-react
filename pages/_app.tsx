@@ -1,6 +1,8 @@
+import '../styles/global.scss';
 import '@shopify/polaris/dist/styles.css';
 
-import {ApolloClient, ApolloProvider, createHttpLink, InMemoryCache} from '@apollo/client';
+import {ApolloProvider} from '@apollo/client';
+import {CssBaseline} from '@material-ui/core';
 import {AppConfig} from '@shopify/app-bridge';
 import {Provider} from '@shopify/app-bridge-react';
 import {AppProvider} from '@shopify/polaris';
@@ -12,16 +14,7 @@ import {RecoilRoot} from 'recoil';
 
 import ClientRouter from '../components/ClientRouter';
 import Layout from '../components/Layout';
-
-const link = createHttpLink({
-  uri: '/graphql',
-  credentials: 'include',
-});
-
-const client = new ApolloClient({
-  link: link,
-  cache: new InMemoryCache(),
-});
+import client from '../graphql/client';
 
 const MyApp = ({Component, pageProps}: AppProps) => {
   // @ts-ignore
@@ -39,6 +32,7 @@ const MyApp = ({Component, pageProps}: AppProps) => {
           <AppProvider i18n={translations}>
             <ApolloProvider client={client}>
               <Layout>
+                <CssBaseline />
                 <Component {...pageProps} />
               </Layout>
             </ApolloProvider>
