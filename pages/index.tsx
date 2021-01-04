@@ -1,5 +1,4 @@
 import {useMutation, useQuery} from '@apollo/client';
-import Handlebars from 'handlebars';
 import React from 'react';
 import {useRecoilValue} from 'recoil';
 import * as Yup from 'yup';
@@ -10,7 +9,7 @@ import {getInitFormValues} from '../components/Form/functions';
 import {countryList} from '../components/Form/lists';
 import SelectField from '../components/Form/SelectField';
 import TextField from '../components/Form/TextField';
-import TemplateOne from '../components/TemplatePreviews/templateOne';
+import TemplateOne from '../components/TemplateOne';
 import {ITemplateOne} from '../components/TemplatePreviews/templateOne';
 import {UPDATE_SHOP} from '../graphql/shop/mutation';
 import {GET_SHOP_DATA} from '../graphql/shop/query';
