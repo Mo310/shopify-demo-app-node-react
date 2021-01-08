@@ -20,7 +20,13 @@ const Form: React.FC<IForm> = ({children, initValues, validation, submitFunction
       validationSchema={validation}
       enableReinitialize
       onSubmit={async (values, {setSubmitting}) => {
-        console.log(refetch);
+        const reader = new FileReader();
+
+        // console.log(values.shopLogo.files[0]);
+
+        // console.log(reader.readAsDataURL(values.shopLogo));
+        // console.log(refetch);
+
         await submitFunction(values)
           .then((result) => {
             setSubmitting(false);

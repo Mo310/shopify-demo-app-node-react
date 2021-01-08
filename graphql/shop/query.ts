@@ -12,6 +12,7 @@ export const GET_SHOP_DATA = gql`
       province
       shopOwner
       zip
+      shopLogo
     }
   }
 `;

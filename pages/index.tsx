@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 
 import {shopOriginState} from '../Atoms';
 import Form from '../components/Form';
+import FileUploadField from '../components/Form/FileUploadField';
 import {getInitFormValues} from '../components/Form/functions';
 import {countryList} from '../components/Form/lists';
 import SelectField from '../components/Form/SelectField';
@@ -36,6 +37,7 @@ const Home = () => {
       province: '',
       shopOwner: '',
       zip: '',
+      shopLogo: '',
     },
     data?.shop
   );
@@ -106,6 +108,7 @@ const Home = () => {
               <TextField label="Phonenumber" name="phone" />
               <TextField label="Province" name="province" />
               <TextField label="Shop Onwer Name" name="shopOwner" />
+              <FileUploadField label="Logo" name="shopLogo" />
             </Form>
           )}
         </div>
